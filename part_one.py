@@ -10,7 +10,9 @@ df['Installs'] = pd.to_numeric(df['Installs'], errors='coerce')
 
 # Drop rows with NaN values in the 'Installs' column
 df = df.dropna(subset=['Installs'])
-df = df.dropna(subset=['Reviews'])
+
+# Remove non-numeric characters from the 'Reviews' column
+df['Reviews'] = pd.to_numeric(df['Reviews'].str.replace(',', ''), errors='coerce')
 
 # Store the cleaned dataset in a new file named 'cleaned_dataset.csv'
 df.to_csv('cleaned_dataset.csv', index=False)
@@ -37,7 +39,7 @@ def calculate_characteristics(df, column_name):
     return characteristics
 
 # Calculate characteristics for each numerical column
-numerical_columns = ['Rating',  'Installs']
+numerical_columns = ['Rating', 'Reviews' , 'Installs']
 for column in numerical_columns:
     characteristics = calculate_characteristics(df, column)
     print(f"Characteristics for {column}:")
